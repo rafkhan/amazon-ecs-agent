@@ -263,6 +263,9 @@ func EnvironmentConfig() Config {
 	seLinuxCapable := utils.ParseBool(os.Getenv("ECS_SELINUX_CAPABLE"), false)
 	appArmorCapable := utils.ParseBool(os.Getenv("ECS_APPARMOR_CAPABLE"), false)
 
+  sigkillTimeoutEnv := os.Getenv("ECS_SIGKILL_TIMEOUT")
+  dockerSigkillTimeout := strconv.ParseUint(sigkillTimeoutEnv)
+
 	return Config{
 		Cluster:                 clusterRef,
 		APIEndpoint:             endpoint,
@@ -283,6 +286,7 @@ func EnvironmentConfig() Config {
 		PrivilegedDisabled:      privilegedDisabled,
 		SELinuxCapable:          seLinuxCapable,
 		AppArmorCapable:         appArmorCapable,
+    DockerSigkillTimeout:    dockerSigkillTimeout,
 	}
 }
 

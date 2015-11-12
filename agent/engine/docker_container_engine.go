@@ -38,7 +38,6 @@ import (
 )
 
 const (
-	dockerStopTimeoutSeconds = 30
 	dockerDefaultTag         = "latest"
 )
 
@@ -433,7 +432,9 @@ func (dg *DockerGoClient) stopContainer(ctx context.Context, dockerId string) Do
 		return DockerContainerMetadata{Error: CannotGetDockerClientError{version: dg.version, err: err}}
 	}
 
-	err = client.StopContainer(dockerId, dockerStopTimeoutSeconds)
+  sigkillTimeout := config.dockerSigkillTimeout;
+
+	err = client.StopContainer(dockerId, sigkillTimeout)
 	select {
 	case <-ctx.Done():
 		// parent function has already timed out and returned; we're writing to a
